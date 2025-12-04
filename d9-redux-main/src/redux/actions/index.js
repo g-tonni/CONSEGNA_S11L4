@@ -2,6 +2,8 @@ export const ADD_TO_FAVLIST = 'ADD_TO_FAVLIST'
 export const REMOVE_FROM_FAVLIST = 'REMOVE_FROM_FAVLIST'
 export const SAVE_RESULTS = 'SAVE_RESULTS'
 export const SEARCH_VALUE = 'SEARCH_VALUE'
+export const LOADING = 'LOADING'
+export const ERROR = 'ERROR'
 
 const baseEndpoint = 'https://strive-benchmark.herokuapp.com/api/jobs?search='
 
@@ -40,14 +42,26 @@ export const saveResults = function () {
         }
       })
       .then((data) => {
-        console.log(data.data)
+        // console.log(data.data)
         dispatch({
           type: SAVE_RESULTS,
           payload: data.data,
         })
+        dispatch({
+          type: LOADING,
+          payload: false,
+        })
       })
       .catch((err) => {
         console.log('ERRORE: ', err)
+        dispatch({
+          type: LOADING,
+          payload: false,
+        })
+        dispatch({
+          type: ERROR,
+          payload: true,
+        })
       })
   }
 }
